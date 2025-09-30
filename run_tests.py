@@ -13,7 +13,6 @@ This script provides multiple ways to run tests:
 import sys
 import subprocess
 import argparse
-import os
 from pathlib import Path
 
 
@@ -25,7 +24,7 @@ def run_command(cmd, description):
     print('='*60)
     
     try:
-        result = subprocess.run(cmd, check=True, cwd=Path(__file__).parent)
+        _ = subprocess.run(cmd, check=True, cwd=Path(__file__).parent)
         print(f"{description} completed successfully")
         return True
     except subprocess.CalledProcessError as e:

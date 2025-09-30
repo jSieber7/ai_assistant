@@ -8,7 +8,14 @@ for the GitHub Actions workflows to function properly.
 
 import os
 import yaml
-from pathlib import Path
+import importlib.util
+
+def check_package_available(spec):
+    """Check if package is available and return status."""
+    if importlib.util.find_spec(spec) is not None:
+        print(f"✅ {spec} is available")
+    else:
+        print(f"❌ {spec} is not installed")
 
 def check_file_exists(filepath):
     """Check if a file exists and return status."""
@@ -44,7 +51,7 @@ def check_workflow_configuration():
         
         if exists:
             yaml_status, valid = validate_yaml(workflow_file)
-            checks.append((f"  YAML syntax", yaml_status, valid))
+            checks.append(("  YAML syntax", yaml_status, valid))
     
     # Check documentation files
     doc_files = [
@@ -87,24 +94,10 @@ def check_python_dependencies():
     print("\n🔍 Checking Python Dependencies")
     print("=" * 50)
     
-    try:
-        import pytest
-        print("✅ pytest is available")
-    except ImportError:
-        print("❌ pytest is not installed")
-    
-    try:
-        import fastapi
-        print("✅ fastapi is available")
-    except ImportError:
-        print("❌ fastapi is not installed")
-    
-    try:
-        import langchain
-        print("✅ langchain is available")
-    except ImportError:
-        print("❌ langchain is not installed")
-
+    check_package_available("pytest")
+    check_package_available("fastapi")
+    check_package_available("langchain")
+   
 def main():
     """Run all validation checks."""
     print("GitHub Actions Configuration Validator")

@@ -2,7 +2,6 @@ import pytest
 import subprocess
 import time
 import requests
-import signal
 import os
 from pathlib import Path
 
