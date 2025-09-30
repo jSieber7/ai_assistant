@@ -34,6 +34,7 @@ def test_server_process():
     process.wait(timeout=5)
 
 
+@pytest.mark.integration
 class TestApplicationIntegration:
     """Integration tests for the FastAPI application."""
     
@@ -65,6 +66,7 @@ class TestApplicationIntegration:
         assert len(data['data']) > 0
 
 
+@pytest.mark.integration
 class TestConfigurationIntegration:
     """Test configuration and environment setup."""
     
@@ -95,6 +97,7 @@ class TestConfigurationIntegration:
                 get_llm()
 
 
+@pytest.mark.integration
 class TestDependencyInjection:
     """Test dependency injection and module imports."""
     
@@ -128,6 +131,7 @@ class TestDependencyInjection:
         assert any('CORSMiddleware' in str(middleware) for middleware in app.user_middleware)
 
 
+@pytest.mark.integration
 @pytest.mark.slow
 class TestPerformance:
     """Performance-related integration tests."""
@@ -156,6 +160,7 @@ class TestPerformance:
         assert (end_time - start_time) < 2.0  # Should respond within 2 seconds
 
 
+@pytest.mark.integration
 class TestErrorRecovery:
     """Test error recovery and resilience."""
     
