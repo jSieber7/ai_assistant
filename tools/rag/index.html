@@ -1,0 +1,1648 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="FastAPI LLM Agent with Tool Integration">
+      
+      
+      
+        <link rel="canonical" href="https://jSieber7.github.io/ai-assistant/tools/rag/">
+      
+      
+        <link rel="prev" href="../searx/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>RAG System - AI Agent Workflow</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rag-retrieval-augmented-generation-system" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="AI Agent Workflow" class="md-header__button md-logo" aria-label="AI Agent Workflow" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI Agent Workflow
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              RAG System
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../api/endpoints/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API Reference
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/setup/" class="md-tabs__link">
+          
+  
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../searx/" class="md-tabs__link">
+          
+  
+  
+  Tools
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="AI Agent Workflow" class="md-nav__button md-logo" aria-label="AI Agent Workflow" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AI Agent Workflow
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent Workflow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tool System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/endpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Setup Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/branch-protection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Branch Protection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/security-and-api-key-handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security and API Key Handling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Testing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tools
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../searx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SearX Integration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    RAG System
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    RAG System
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#system-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Components
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Variables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supported-vector-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported Vector Databases
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Status
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#planned-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Planned Features
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Planned Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#document-ingestion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Document Ingestion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Processing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#document-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      Document Support
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Document Support">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#supported-formats" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported Formats
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processing-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processing Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-rag-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic RAG Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#document-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Document Management
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup Instructions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup Instructions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-1-postgresql-with-pgvector-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option 1: PostgreSQL with pgvector (Production)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-2-sqlite-with-vector-extension-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option 2: SQLite with vector extension (Development)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-privacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Privacy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Access Control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#content-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Content Validation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Optimization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#indexing-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Indexing Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chunking-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chunking Optimization
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unit-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unit Tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integration-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration Tests
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#planned-error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Planned Error Handling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Roadmap
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Roadmap">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-basic-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Basic RAG
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-advanced-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Advanced Features
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-production-ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Production Ready
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integration-with-ai-assistant" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration with AI Assistant
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Integration with AI Assistant">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automatic-tool-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automatic Tool Selection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-enhancement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response Enhancement
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#support" class="md-nav__link">
+    <span class="md-ellipsis">
+      Support
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#document-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Document Organization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Monitoring
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="rag-retrieval-augmented-generation-system">RAG (Retrieval-Augmented Generation) System<a class="headerlink" href="#rag-retrieval-augmented-generation-system" title="Permanent link">&para;</a></h1>
+<p>The RAG system enhances the AI assistant's capabilities by providing access to a knowledge base of documents. This allows the assistant to answer questions based on specific content beyond its training data.</p>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>Retrieval-Augmented Generation combines information retrieval with generative AI to provide accurate, context-aware responses. The RAG system:</p>
+<ul>
+<li><strong>Stores documents</strong> in a vector database for efficient retrieval</li>
+<li><strong>Searches relevant content</strong> based on user queries</li>
+<li><strong>Augments LLM responses</strong> with retrieved information</li>
+<li><strong>Provides citations</strong> for source material</li>
+</ul>
+<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
+<h3 id="system-components">System Components<a class="headerlink" href="#system-components" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>User Query → Embedding Model → Vector Search → Context Augmentation → LLM Response
+</code></pre></div>
+
+<ol>
+<li><strong>Document Processing</strong>: Convert documents to vector embeddings</li>
+<li><strong>Vector Storage</strong>: Store embeddings in a vector database</li>
+<li><strong>Query Processing</strong>: Convert user queries to embeddings</li>
+<li><strong>Similarity Search</strong>: Find most relevant document chunks</li>
+<li><strong>Response Generation</strong>: Augment LLM prompt with retrieved context</li>
+</ol>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<h3 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h3>
+<p>Add the following to your <code>.env</code> file:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Vector database configuration</span>
+<span class="nv">VECTOR_DB_URL</span><span class="o">=</span>postgresql://user:pass@localhost:5432/rag_db
+<span class="c1"># or for SQLite (development)</span>
+<span class="nv">VECTOR_DB_URL</span><span class="o">=</span>sqlite:///./rag.db
+
+<span class="c1"># Embedding model settings</span>
+<span class="nv">EMBEDDING_MODEL</span><span class="o">=</span>sentence-transformers/all-MiniLM-L6-v2
+<span class="nv">EMBEDDING_DIMENSION</span><span class="o">=</span><span class="m">384</span>
+
+<span class="c1"># RAG settings</span>
+<span class="nv">RAG_MAX_RESULTS</span><span class="o">=</span><span class="m">5</span>
+<span class="nv">RAG_SIMILARITY_THRESHOLD</span><span class="o">=</span><span class="m">0</span>.7
+<span class="nv">RAG_CHUNK_SIZE</span><span class="o">=</span><span class="m">1000</span>
+<span class="nv">RAG_CHUNK_OVERLAP</span><span class="o">=</span><span class="m">200</span>
+</code></pre></div>
+
+<h3 id="supported-vector-databases">Supported Vector Databases<a class="headerlink" href="#supported-vector-databases" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>PostgreSQL with pgvector</strong> (recommended for production)</li>
+<li><strong>SQLite with vector extension</strong> (development)</li>
+<li><strong>ChromaDB</strong> (lightweight alternative)</li>
+<li><strong>Pinecone</strong> (cloud-based)</li>
+</ul>
+<h2 id="implementation-status">Implementation Status<a class="headerlink" href="#implementation-status" title="Permanent link">&para;</a></h2>
+<p><strong>Current Status</strong>: <em>Planned Feature</em></p>
+<p>This integration is part of the roadmap and will be implemented in future releases.</p>
+<h2 id="planned-features">Planned Features<a class="headerlink" href="#planned-features" title="Permanent link">&para;</a></h2>
+<h3 id="document-ingestion">Document Ingestion<a class="headerlink" href="#document-ingestion" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Planned implementation</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">ingest_document</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Process and store a document in the RAG system</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_path: Path to document (PDF, TXT, DOCX, etc.)</span>
+<span class="sd">        metadata: Optional document metadata</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Document ID for reference</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</code></pre></div>
+
+<h3 id="query-processing">Query Processing<a class="headerlink" href="#query-processing" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">rag_query</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">top_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RAGResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Search knowledge base and augment LLM response</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        query: User question or search term</span>
+<span class="sd">        top_k: Number of results to retrieve</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        RAG result with context and citations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</code></pre></div>
+
+<h2 id="document-support">Document Support<a class="headerlink" href="#document-support" title="Permanent link">&para;</a></h2>
+<h3 id="supported-formats">Supported Formats<a class="headerlink" href="#supported-formats" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Text files</strong> (.txt, .md)</li>
+<li><strong>PDF documents</strong> (.pdf)</li>
+<li><strong>Word documents</strong> (.docx)</li>
+<li><strong>Web pages</strong> (URL ingestion)</li>
+<li><strong>Code files</strong> (.py, .js, .java, etc.)</li>
+</ul>
+<h3 id="processing-pipeline">Processing Pipeline<a class="headerlink" href="#processing-pipeline" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Text extraction</strong> from various formats</li>
+<li><strong>Chunking</strong> into manageable pieces</li>
+<li><strong>Embedding generation</strong> using transformer models</li>
+<li><strong>Vector storage</strong> in database</li>
+</ol>
+<h2 id="usage-examples">Usage Examples<a class="headerlink" href="#usage-examples" title="Permanent link">&para;</a></h2>
+<h3 id="basic-rag-integration">Basic RAG Integration<a class="headerlink" href="#basic-rag-integration" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Planned usage in tool calling</span>
+<span class="nd">@tool</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">search_knowledge_base</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Search the knowledge base for relevant information</span>
+
+<span class="sd">    Use this tool when you need to find specific information</span>
+<span class="sd">    from uploaded documents or the knowledge base.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">rag_client</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">format_rag_results</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="document-management">Document Management<a class="headerlink" href="#document-management" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Planned document management</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">add_document_to_kb</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add a document to the knowledge base</span>
+
+<span class="sd">    Returns document ID for future reference</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">doc_id</span> <span class="o">=</span> <span class="k">await</span> <span class="n">rag_client</span><span class="o">.</span><span class="n">ingest_document</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Document added with ID: </span><span class="si">{</span><span class="n">doc_id</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+<h2 id="setup-instructions">Setup Instructions<a class="headerlink" href="#setup-instructions" title="Permanent link">&para;</a></h2>
+<h3 id="option-1-postgresql-with-pgvector-production">Option 1: PostgreSQL with pgvector (Production)<a class="headerlink" href="#option-1-postgresql-with-pgvector-production" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Install PostgreSQL with pgvector</strong>:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Using Docker</span>
+docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="m">5432</span>:5432<span class="w"> </span>-e<span class="w"> </span><span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>password<span class="w"> </span>ankane/pgvector
+</code></pre></div>
+
+<ol>
+<li><strong>Create database</strong>:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">rag_db</span><span class="p">;</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">rag_db</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">vector</span><span class="p">;</span>
+</code></pre></div>
+
+<ol>
+<li><strong>Configure the AI assistant</strong>:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;VECTOR_DB_URL=postgresql://user:password@localhost:5432/rag_db&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.env
+</code></pre></div>
+
+<h3 id="option-2-sqlite-with-vector-extension-development">Option 2: SQLite with vector extension (Development)<a class="headerlink" href="#option-2-sqlite-with-vector-extension-development" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Install SQLite vector extension</strong>:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>sqlite-vector
+</code></pre></div>
+
+<ol>
+<li><strong>Configure for development</strong>:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;VECTOR_DB_URL=sqlite:///./rag.db&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.env
+</code></pre></div>
+
+<h2 id="security-considerations">Security Considerations<a class="headerlink" href="#security-considerations" title="Permanent link">&para;</a></h2>
+<h3 id="data-privacy">Data Privacy<a class="headerlink" href="#data-privacy" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Documents are stored locally or in controlled infrastructure</li>
+<li>No third-party data sharing unless explicitly configured</li>
+<li>Encryption at rest for sensitive documents</li>
+</ul>
+<h3 id="access-control">Access Control<a class="headerlink" href="#access-control" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Implement document-level permissions</li>
+<li>Role-based access to knowledge bases</li>
+<li>Audit trails for document access</li>
+</ul>
+<h3 id="content-validation">Content Validation<a class="headerlink" href="#content-validation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Scan for malicious content before ingestion</li>
+<li>Validate document sources</li>
+<li>Implement content filtering</li>
+</ul>
+<h2 id="performance-optimization">Performance Optimization<a class="headerlink" href="#performance-optimization" title="Permanent link">&para;</a></h2>
+<h3 id="indexing-strategy">Indexing Strategy<a class="headerlink" href="#indexing-strategy" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Hierarchical indexing</strong> for large document collections</li>
+<li><strong>Approximate nearest neighbor search</strong> for speed</li>
+<li><strong>Caching</strong> frequently accessed embeddings</li>
+</ul>
+<h3 id="chunking-optimization">Chunking Optimization<a class="headerlink" href="#chunking-optimization" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Semantic chunking</strong> based on content structure</li>
+<li><strong>Overlap management</strong> to maintain context</li>
+<li><strong>Size tuning</strong> for optimal retrieval</li>
+</ul>
+<h2 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">&para;</a></h2>
+<h3 id="unit-tests">Unit Tests<a class="headerlink" href="#unit-tests" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">asyncio</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_rag_ingestion</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test document ingestion functionality&quot;&quot;&quot;</span>
+    <span class="n">rag_client</span> <span class="o">=</span> <span class="n">RAGClient</span><span class="p">()</span>
+    <span class="n">doc_id</span> <span class="o">=</span> <span class="k">await</span> <span class="n">rag_client</span><span class="o">.</span><span class="n">ingest_document</span><span class="p">(</span><span class="s2">&quot;test_document.txt&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">doc_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</code></pre></div>
+
+<h3 id="integration-tests">Integration Tests<a class="headerlink" href="#integration-tests" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">integration</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_rag_query</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test RAG query functionality&quot;&quot;&quot;</span>
+    <span class="n">rag_client</span> <span class="o">=</span> <span class="n">RAGClient</span><span class="p">()</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">rag_client</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;test query&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</code></pre></div>
+
+<h2 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h2>
+<h3 id="common-issues">Common Issues<a class="headerlink" href="#common-issues" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Database connectivity</strong>: Implement retry logic with backoff</li>
+<li><strong>Document processing failures</strong>: Fallback to alternative parsers</li>
+<li><strong>Embedding generation failures</strong>: Use backup models</li>
+</ul>
+<h3 id="planned-error-handling">Planned Error Handling<a class="headerlink" href="#planned-error-handling" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RAGClient</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">search_with_fallback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RAGResult</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">RAGError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RAG search failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># Fallback to basic keyword search or disable feature</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">fallback_search</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="roadmap">Roadmap<a class="headerlink" href="#roadmap" title="Permanent link">&para;</a></h2>
+<h3 id="phase-1-basic-rag">Phase 1: Basic RAG<a class="headerlink" href="#phase-1-basic-rag" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] Implement document ingestion pipeline</li>
+<li>[ ] Add vector database integration</li>
+<li>[ ] Create basic search functionality</li>
+<li>[ ] Add unit tests</li>
+</ul>
+<h3 id="phase-2-advanced-features">Phase 2: Advanced Features<a class="headerlink" href="#phase-2-advanced-features" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] Implement multi-modal RAG (images, audio)</li>
+<li>[ ] Add cross-document reasoning</li>
+<li>[ ] Implement citation generation</li>
+<li>[ ] Add result ranking and filtering</li>
+</ul>
+<h3 id="phase-3-production-ready">Phase 3: Production Ready<a class="headerlink" href="#phase-3-production-ready" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] Performance optimization for large datasets</li>
+<li>[ ] Advanced security features</li>
+<li>[ ] Monitoring and analytics</li>
+<li>[ ] Backup and recovery procedures</li>
+</ul>
+<h2 id="integration-with-ai-assistant">Integration with AI Assistant<a class="headerlink" href="#integration-with-ai-assistant" title="Permanent link">&para;</a></h2>
+<h3 id="automatic-tool-selection">Automatic Tool Selection<a class="headerlink" href="#automatic-tool-selection" title="Permanent link">&para;</a></h3>
+<p>The AI agent will automatically determine when RAG is appropriate based on:
+- Query specificity and domain knowledge requirements
+- Availability of relevant documents in the knowledge base
+- User preferences and conversation context</p>
+<h3 id="response-enhancement">Response Enhancement<a class="headerlink" href="#response-enhancement" title="Permanent link">&para;</a></h3>
+<p>RAG-enhanced responses will include:
+- <strong>Source citations</strong> for retrieved information
+- <strong>Confidence scores</strong> based on similarity matching
+- <strong>Contextual relevance</strong> indicators</p>
+<h2 id="related-documentation">Related Documentation<a class="headerlink" href="#related-documentation" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../architecture/overview/">AI Assistant Architecture</a></li>
+<li><a href="../../architecture/tools/">Tool System Design</a></li>
+<li><a href="../../api/endpoints/">API Endpoints Reference</a></li>
+<li><a href="../searx/">SearX Integration</a></li>
+</ul>
+<h2 id="support">Support<a class="headerlink" href="#support" title="Permanent link">&para;</a></h2>
+<p>For issues with RAG integration:
+1. Check database connectivity and permissions
+2. Verify document processing pipeline
+3. Review embedding model compatibility
+4. Consult the <a href="../../development/setup/#troubleshooting">troubleshooting guide</a></p>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
+<h3 id="document-organization">Document Organization<a class="headerlink" href="#document-organization" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Categorize documents</strong> by topic or project</li>
+<li><strong>Maintain metadata</strong> for better retrieval</li>
+<li><strong>Regularly update</strong> the knowledge base</li>
+</ul>
+<h3 id="query-optimization">Query Optimization<a class="headerlink" href="#query-optimization" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Use specific queries</strong> for better results</li>
+<li><strong>Combine with filters</strong> when appropriate</li>
+<li><strong>Iterative refinement</strong> based on results</li>
+</ul>
+<h3 id="performance-monitoring">Performance Monitoring<a class="headerlink" href="#performance-monitoring" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Track query response times</strong></li>
+<li><strong>Monitor retrieval accuracy</strong></li>
+<li><strong>Optimize chunking strategies</strong></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

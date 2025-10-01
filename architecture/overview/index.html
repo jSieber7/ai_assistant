@@ -1,0 +1,1512 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="FastAPI LLM Agent with Tool Integration">
+      
+      
+      
+        <link rel="canonical" href="https://jSieber7.github.io/ai-assistant/architecture/overview/">
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../workflow/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>Overview - AI Agent Workflow</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#system-architecture-overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="AI Agent Workflow" class="md-header__button md-logo" aria-label="AI Agent Workflow" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI Agent Workflow
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../api/endpoints/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API Reference
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/setup/" class="md-tabs__link">
+          
+  
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../tools/searx/" class="md-tabs__link">
+          
+  
+  
+  Tools
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="AI Agent Workflow" class="md-nav__button md-logo" aria-label="AI Agent Workflow" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AI Agent Workflow
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture Diagram
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Components
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-api-layer-fastapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. API Layer (FastAPI)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-llm-agent-layer-langchain" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. LLM Agent Layer (LangChain)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-tool-system-extensible" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Tool System (Extensible)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-data-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Data Layer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Flow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standard-chat-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Standard Chat Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tool-calling-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tool Calling Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Principles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-openai-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. OpenAI Compatibility
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-extensibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Extensibility
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-security-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Security First
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Performance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technology-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technology Stack
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technology Stack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#development-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development Tools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Infrastructure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#environment-based-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment-Based Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Considerations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scalability-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scalability Considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scalability Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#horizontal-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Horizontal Scaling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring-and-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring and Observability
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#development-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development Environment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Environment
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integration-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Integration Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#external-api-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      External API Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tool-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tool Integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-architecture-evolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future Architecture Evolution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Future Architecture Evolution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-core-stability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Core Stability
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-advanced-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Advanced Features
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-production-ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Production Ready
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision Log
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision Log">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#technology-choices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technology Choices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture Decisions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent Workflow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tool System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/endpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Setup Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/branch-protection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Branch Protection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/security-and-api-key-handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security and API Key Handling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Testing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tools
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/searx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SearX Integration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RAG System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="system-architecture-overview">System Architecture Overview<a class="headerlink" href="#system-architecture-overview" title="Permanent link">&para;</a></h1>
+<p>This document describes the high-level architecture of the AI Assistant project, including its components, data flow, and design principles.</p>
+<h2 id="architecture-diagram">Architecture Diagram<a class="headerlink" href="#architecture-diagram" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code>┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   Client Apps   │◄──►│   FastAPI API    │◄──►│   LLM Agents    │
+│ (OpenWebUI,     │    │  (OpenAI-compat) │    │   (LangChain)   │
+│  Chat Apps)     │    │                  │    │                 │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+         │                       │                       │
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   Web Frontend  │    │   Tool System    │◄──►│  External APIs  │
+│   (Optional)    │    │  (Extensible)    │    │ (OpenRouter,    │
+│                 │    │                  │    │   SearX, RAG)   │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+</code></pre></div>
+
+<h2 id="core-components">Core Components<a class="headerlink" href="#core-components" title="Permanent link">&para;</a></h2>
+<h3 id="1-api-layer-fastapi">1. API Layer (FastAPI)<a class="headerlink" href="#1-api-layer-fastapi" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Purpose</strong>: Provide OpenAI-compatible interface</li>
+<li><strong>Technology</strong>: FastAPI with Pydantic models<br><br>
+<u><strong>Features</strong></u> </li>
+<li>OpenAPI documentation</li>
+<li>Streaming responses</li>
+<li>CORS support</li>
+<li>Authentication (planned)</li>
+</ul>
+<h3 id="2-llm-agent-layer-langchain">2. LLM Agent Layer (LangChain)<a class="headerlink" href="#2-llm-agent-layer-langchain" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Purpose</strong>: Orchestrate LLM interactions and tool calling</li>
+<li><strong>Technology</strong>: LangChain with custom agents<br><br>
+<u><strong>Features</strong></u></li>
+<li>Multi-model support via OpenRouter</li>
+<li>Tool calling capabilities</li>
+<li>Conversation memory</li>
+<li>Response streaming</li>
+</ul>
+<h3 id="3-tool-system-extensible">3. Tool System (Extensible)<a class="headerlink" href="#3-tool-system-extensible" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Purpose</strong>: Extend AI capabilities with external tools</li>
+<li><strong>Technology</strong>: Modular tool architecture<br><br>
+<u><strong>Current Tools</strong></u></li>
+<li>Web search (SearX integration - planned)</li>
+<li>Knowledge base (RAG system - planned)</li>
+<li>Custom tool development framework</li>
+</ul>
+<h3 id="4-data-layer">4. Data Layer<a class="headerlink" href="#4-data-layer" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Purpose</strong>: Manage application data and vector storage</li>
+<li><strong>Technology</strong>: PostgreSQL with pgvector (planned)<br><br>
+<u><strong>Features</strong></u></li>
+<li>Vector embeddings for RAG</li>
+<li>Document storage and retrieval</li>
+<li>Conversation history (planned)</li>
+</ul>
+<h2 id="data-flow">Data Flow<a class="headerlink" href="#data-flow" title="Permanent link">&para;</a></h2>
+<h3 id="standard-chat-flow">Standard Chat Flow<a class="headerlink" href="#standard-chat-flow" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Request Reception</strong>: Client sends chat request to <code>/v1/chat/completions</code></li>
+<li><strong>Message Processing</strong>: Convert OpenAI format to LangChain messages</li>
+<li><strong>Agent Execution</strong>: LangChain agent processes request with available tools</li>
+<li><strong>Tool Execution</strong>: If needed, tools are called to gather information</li>
+<li><strong>Response Generation</strong>: LLM generates response based on context</li>
+<li><strong>Response Formatting</strong>: Convert LangChain response to OpenAI format</li>
+<li><strong>Streaming</strong>: Send response chunks back to client</li>
+</ol>
+<h3 id="tool-calling-flow">Tool Calling Flow<a class="headerlink" href="#tool-calling-flow" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Tool Detection</strong>: Agent determines if tools are needed</li>
+<li><strong>Tool Selection</strong>: Choose appropriate tool based on query</li>
+<li><strong>Tool Execution</strong>: Run tool with parameters</li>
+<li><strong>Result Integration</strong>: Combine tool results with conversation context</li>
+<li><strong>Response Generation</strong>: Generate final response with tool insights</li>
+</ol>
+<h2 id="design-principles">Design Principles<a class="headerlink" href="#design-principles" title="Permanent link">&para;</a></h2>
+<h3 id="1-openai-compatibility">1. OpenAI Compatibility<a class="headerlink" href="#1-openai-compatibility" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Full compliance with OpenAI API specification</li>
+<li>Support for both streaming and non-streaming responses</li>
+<li>Standard error codes and response formats</li>
+</ul>
+<h3 id="2-extensibility">2. Extensibility<a class="headerlink" href="#2-extensibility" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Modular tool system for adding new capabilities</li>
+<li>Plugin architecture for custom integrations</li>
+<li>Configuration-driven behavior</li>
+</ul>
+<h3 id="3-security-first">3. Security First<a class="headerlink" href="#3-security-first" title="Permanent link">&para;</a></h3>
+<ul>
+<li>No hardcoded API keys or secrets</li>
+<li>Environment-based configuration</li>
+<li>Input validation and sanitization</li>
+<li>Regular security scanning</li>
+</ul>
+<h3 id="4-performance">4. Performance<a class="headerlink" href="#4-performance" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Async/await for non-blocking operations</li>
+<li>Connection pooling for external APIs</li>
+<li>Caching strategies for frequent operations</li>
+<li>Efficient vector search algorithms</li>
+</ul>
+<h2 id="technology-stack">Technology Stack<a class="headerlink" href="#technology-stack" title="Permanent link">&para;</a></h2>
+<h3 id="backend">Backend<a class="headerlink" href="#backend" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Framework</strong>: FastAPI (Python 3.12)</li>
+<li><strong>LLM Orchestration</strong>: LangChain</li>
+<li><strong>Vector Database</strong>: PostgreSQL + pgvector (planned)</li>
+<li><strong>API Client</strong>: HTTPX for async requests</li>
+</ul>
+<h3 id="development-tools">Development Tools<a class="headerlink" href="#development-tools" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Package Manager</strong>: UV</li>
+<li><strong>Testing</strong>: pytest with coverage</li>
+<li><strong>Code Quality</strong>: ruff, black, mypy</li>
+<li><strong>Security</strong>: bandit, pip-audit</li>
+</ul>
+<h3 id="infrastructure">Infrastructure<a class="headerlink" href="#infrastructure" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>CI/CD</strong>: GitHub Actions</li>
+<li><strong>Documentation</strong>: MkDocs + Material theme</li>
+<li><strong>Containerization</strong>: Docker (planned)</li>
+</ul>
+<h2 id="configuration-management">Configuration Management<a class="headerlink" href="#configuration-management" title="Permanent link">&para;</a></h2>
+<h3 id="environment-based-configuration">Environment-Based Configuration<a class="headerlink" href="#environment-based-configuration" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># app/core/config.py</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+    <span class="n">openrouter_api_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SecretStr</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">openrouter_base_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://openrouter.ai/api/v1&quot;</span>
+    <span class="n">default_model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;anthropic/claude-3.5-sonnet&quot;</span>
+    <span class="c1"># ... other settings</span>
+</code></pre></div>
+
+<h3 id="security-considerations">Security Considerations<a class="headerlink" href="#security-considerations" title="Permanent link">&para;</a></h3>
+<ul>
+<li>API keys stored as <code>SecretStr</code></li>
+<li>Environment variables for sensitive data</li>
+<li>Validation of all configuration values</li>
+<li>Secure defaults for production</li>
+</ul>
+<h2 id="scalability-considerations">Scalability Considerations<a class="headerlink" href="#scalability-considerations" title="Permanent link">&para;</a></h2>
+<h3 id="horizontal-scaling">Horizontal Scaling<a class="headerlink" href="#horizontal-scaling" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Stateless API design</li>
+<li>External session storage (planned)</li>
+<li>Load balancer compatibility</li>
+</ul>
+<h3 id="performance-optimization">Performance Optimization<a class="headerlink" href="#performance-optimization" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Connection pooling for database and API calls</li>
+<li>Caching layer for frequent queries</li>
+<li>Async processing for I/O operations</li>
+</ul>
+<h3 id="monitoring-and-observability">Monitoring and Observability<a class="headerlink" href="#monitoring-and-observability" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Structured logging</li>
+<li>Performance metrics collection</li>
+<li>Health check endpoints</li>
+<li>Error tracking and alerting</li>
+</ul>
+<h2 id="deployment-architecture">Deployment Architecture<a class="headerlink" href="#deployment-architecture" title="Permanent link">&para;</a></h2>
+<h3 id="development-environment">Development Environment<a class="headerlink" href="#development-environment" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Local execution with hot reload</li>
+<li>Mock external services for testing</li>
+<li>Detailed logging and debugging</li>
+</ul>
+<h3 id="production-environment">Production Environment<a class="headerlink" href="#production-environment" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Containerized deployment</li>
+<li>Environment-specific configuration</li>
+<li>Health monitoring and auto-recovery</li>
+<li>Scalable infrastructure</li>
+</ul>
+<h2 id="integration-patterns">Integration Patterns<a class="headerlink" href="#integration-patterns" title="Permanent link">&para;</a></h2>
+<h3 id="external-api-integration">External API Integration<a class="headerlink" href="#external-api-integration" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Async HTTP clients with retry logic</li>
+<li>Circuit breaker pattern for resilience</li>
+<li>Rate limiting and backoff strategies</li>
+</ul>
+<h3 id="tool-integration">Tool Integration<a class="headerlink" href="#tool-integration" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Standardized tool interface</li>
+<li>Error handling and fallbacks</li>
+<li>Performance monitoring</li>
+</ul>
+<h2 id="future-architecture-evolution">Future Architecture Evolution<a class="headerlink" href="#future-architecture-evolution" title="Permanent link">&para;</a></h2>
+<h3 id="phase-1-core-stability">Phase 1: Core Stability<a class="headerlink" href="#phase-1-core-stability" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[x] Basic OpenAI-compatible API</li>
+<li>[x] LangChain integration</li>
+<li>[ ] Tool system foundation</li>
+</ul>
+<h3 id="phase-2-advanced-features">Phase 2: Advanced Features<a class="headerlink" href="#phase-2-advanced-features" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] SearX web search integration</li>
+<li>[ ] RAG knowledge base</li>
+<li>[ ] Advanced tool capabilities</li>
+</ul>
+<h3 id="phase-3-production-ready">Phase 3: Production Ready<a class="headerlink" href="#phase-3-production-ready" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] Docker containerization</li>
+<li>[ ] Advanced monitoring</li>
+<li>[ ] High availability setup</li>
+</ul>
+<h2 id="related-documentation">Related Documentation<a class="headerlink" href="#related-documentation" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../api/endpoints/">API Endpoints Reference</a></li>
+<li><a href="../../development/setup/">Development Setup Guide</a></li>
+<li><a href="../tools/">Tool System Design</a></li>
+<li><a href="../workflow/">Agent Workflow</a></li>
+</ul>
+<h2 id="decision-log">Decision Log<a class="headerlink" href="#decision-log" title="Permanent link">&para;</a></h2>
+<h3 id="technology-choices">Technology Choices<a class="headerlink" href="#technology-choices" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>FastAPI</strong>: Chosen for performance, async support, and automatic OpenAPI docs</li>
+<li><strong>LangChain</strong>: Industry standard for LLM orchestration with extensive tooling</li>
+<li><strong>PostgreSQL + pgvector</strong>: Robust, scalable vector database solution</li>
+<li><strong>UV</strong>: Fast, modern Python package manager with excellent dependency resolution</li>
+</ul>
+<h3 id="architecture-decisions">Architecture Decisions<a class="headerlink" href="#architecture-decisions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>OpenAI Compatibility</strong>: Ensures wide compatibility with existing tools</li>
+<li><strong>Modular Tool System</strong>: Allows incremental feature development</li>
+<li><strong>Async-First Design</strong>: Optimal for I/O-heavy LLM operations</li>
+<li><strong>Security-First Approach</strong>: Protects sensitive API keys and user data</li>
+</ul>
+<p>This architecture provides a solid foundation for building a powerful, extensible AI assistant while maintaining security, performance, and developer experience.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

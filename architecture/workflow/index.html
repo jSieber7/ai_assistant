@@ -1,0 +1,1472 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="FastAPI LLM Agent with Tool Integration">
+      
+      
+      
+        <link rel="canonical" href="https://jSieber7.github.io/ai-assistant/architecture/workflow/">
+      
+      
+        <link rel="prev" href="../overview/">
+      
+      
+        <link rel="next" href="../tools/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>Agent Workflow - AI Agent Workflow</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#agent-workflow" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="AI Agent Workflow" class="md-header__button md-logo" aria-label="AI Agent Workflow" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI Agent Workflow
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Agent Workflow
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../api/endpoints/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API Reference
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/setup/" class="md-tabs__link">
+          
+  
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../tools/searx/" class="md-tabs__link">
+          
+  
+  
+  Tools
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="AI Agent Workflow" class="md-nav__button md-logo" aria-label="AI Agent Workflow" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AI Agent Workflow
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Agent Workflow
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent Workflow
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-workflow-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detailed Workflow Steps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Detailed Workflow Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-message-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Message Processing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-intent-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Intent Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-tool-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Tool Selection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-tool-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Tool Execution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-context-augmentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Context Augmentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-response-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Response Generation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-response-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Response Formatting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#streaming-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Streaming Workflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Streaming Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#streaming-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Streaming Steps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streaming-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Streaming Implementation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling Workflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tool-failure-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tool Failure Handling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fallback-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fallback Strategies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Optimization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caching-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Caching Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parallel-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parallel Execution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring-and-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring and Logging
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoring and Logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging Structure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-workflow-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Workflow Scenarios
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example Workflow Scenarios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-1-simple-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 1: Simple Question
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-2-current-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 2: Current Information
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-3-document-based-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 3: Document-Based Query
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customization-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      Customization Points
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Customization Points">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tool-selection-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tool Selection Logic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response Formatting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caching-strategy_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Caching Strategy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tool System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/endpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Setup Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/branch-protection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Branch Protection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/security-and-api-key-handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security and API Key Handling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Testing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tools
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/searx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SearX Integration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RAG System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="agent-workflow">Agent Workflow<a class="headerlink" href="#agent-workflow" title="Permanent link">&para;</a></h1>
+<p>This document describes the workflow and decision-making process of the AI agent, including how it processes requests, decides when to use tools, and generates responses.</p>
+<h2 id="workflow-overview">Workflow Overview<a class="headerlink" href="#workflow-overview" title="Permanent link">&para;</a></h2>
+<p>The agent follows a structured workflow to handle user requests:</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">User</span><span class="w"> </span><span class="nv">Request</span>
+<span class="w">     </span>↓
+<span class="nv">Message</span><span class="w"> </span><span class="nv">Processing</span>
+<span class="w">     </span>↓
+<span class="nv">Intent</span><span class="w"> </span><span class="nv">Analysis</span>
+<span class="w">     </span>↓
+<span class="nv">Tool</span><span class="w"> </span><span class="nv">Selection</span><span class="w"> </span><span class="ss">(</span><span class="k">if</span><span class="w"> </span><span class="nv">needed</span><span class="ss">)</span>
+<span class="w">     </span>↓
+<span class="nv">Tool</span><span class="w"> </span><span class="nv">Execution</span><span class="w"> </span><span class="ss">(</span><span class="k">if</span><span class="w"> </span><span class="nv">applicable</span><span class="ss">)</span>
+<span class="w">     </span>↓
+<span class="nv">Context</span><span class="w"> </span><span class="nv">Augmentation</span>
+<span class="w">     </span>↓
+<span class="nv">Response</span><span class="w"> </span><span class="nv">Generation</span>
+<span class="w">     </span>↓
+<span class="nv">Response</span><span class="w"> </span><span class="nv">Formatting</span>
+<span class="w">     </span>↓
+<span class="nv">User</span><span class="w"> </span><span class="nv">Response</span>
+</code></pre></div>
+
+<h2 id="detailed-workflow-steps">Detailed Workflow Steps<a class="headerlink" href="#detailed-workflow-steps" title="Permanent link">&para;</a></h2>
+<h3 id="1-message-processing">1. Message Processing<a class="headerlink" href="#1-message-processing" title="Permanent link">&para;</a></h3>
+<p><strong>Input</strong>: User message in OpenAI-compatible format</p>
+<p><strong>Processing</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Convert OpenAI messages to LangChain format</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">process_messages</span><span class="p">(</span><span class="n">messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">OpenAIMessage</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">LangChainMessage</span><span class="p">]:</span>
+    <span class="n">langchain_messages</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="s2">&quot;user&quot;</span><span class="p">:</span>
+            <span class="n">langchain_messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">msg</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="s2">&quot;assistant&quot;</span><span class="p">:</span>
+            <span class="n">langchain_messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">AIMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">msg</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="s2">&quot;system&quot;</span><span class="p">:</span>
+            <span class="n">langchain_messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SystemMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">langchain_messages</span>
+</code></pre></div>
+
+<p><strong>Output</strong>: LangChain-compatible message sequence</p>
+<h3 id="2-intent-analysis">2. Intent Analysis<a class="headerlink" href="#2-intent-analysis" title="Permanent link">&para;</a></h3>
+<p>The agent analyzes the user's intent to determine if tools are needed:</p>
+<p><strong>Decision Factors</strong>:
+- <strong>Query specificity</strong>: Specific questions often need tools
+- <strong>Temporal relevance</strong>: Current events require web search
+- <strong>Domain knowledge</strong>: Specialized topics may need RAG
+- <strong>Conversation context</strong>: Previous tool usage patterns</p>
+<p><strong>Example Decision Logic</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">needs_tools</span><span class="p">(</span><span class="n">messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LangChainMessage</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">last_message</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="c1"># Patterns that indicate tool need</span>
+    <span class="n">tool_patterns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;current&quot;</span><span class="p">,</span> <span class="s2">&quot;recent&quot;</span><span class="p">,</span> <span class="s2">&quot;latest&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;search&quot;</span><span class="p">,</span> <span class="s2">&quot;find&quot;</span><span class="p">,</span> <span class="s2">&quot;look up&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;what&#39;s new&quot;</span><span class="p">,</span> <span class="s2">&quot;update on&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;how to&quot;</span><span class="p">,</span> <span class="s2">&quot;tutorial&quot;</span><span class="p">,</span> <span class="s2">&quot;guide&quot;</span>
+    <span class="p">]</span>
+
+    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">pattern</span> <span class="ow">in</span> <span class="n">last_message</span> <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">tool_patterns</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="3-tool-selection">3. Tool Selection<a class="headerlink" href="#3-tool-selection" title="Permanent link">&para;</a></h3>
+<p>If tools are needed, the agent selects the appropriate tool:</p>
+<p><strong>Tool Selection Criteria</strong>:
+- <strong>Relevance</strong>: How well the tool matches the query
+- <strong>Capability</strong>: What information the tool can provide
+- <strong>Performance</strong>: Tool response time and reliability
+- <strong>Cost</strong>: Resource usage considerations</p>
+<p><strong>Available Tools</strong>:<br>
+- <strong>Web Search (SearX)</strong>: For current information, news, real-time data
+- <strong>RAG System</strong>: For document-based knowledge, specific content
+- <strong>Calculator</strong>: For mathematical computations (planned)
+- <strong>Code Execution</strong>: For code-related queries (planned)</p>
+<h3 id="4-tool-execution">4. Tool Execution<a class="headerlink" href="#4-tool-execution" title="Permanent link">&para;</a></h3>
+<p><strong>Sequential Execution</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute_tools</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">selected_tools</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tool</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">selected_tools</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">tool</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tool</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ToolError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tool </span><span class="si">{</span><span class="n">tool</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">tool</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">results</span>
+</code></pre></div>
+
+<p><strong>Parallel Execution</strong> (for independent tools):</p>
+<div class="codehilite"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute_tools_parallel</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tools</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tool</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="n">tasks</span> <span class="o">=</span> <span class="p">{</span><span class="n">tool</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">tool</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span> <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">tools</span><span class="p">}</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">return_exceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tasks</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">results</span><span class="p">))</span>
+</code></pre></div>
+
+<h3 id="5-context-augmentation">5. Context Augmentation<a class="headerlink" href="#5-context-augmentation" title="Permanent link">&para;</a></h3>
+<p>The agent combines tool results with the original conversation:</p>
+<p><strong>Context Building</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_augmented_context</span><span class="p">(</span><span class="n">original_messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Message</span><span class="p">],</span> <span class="n">tool_results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="s2">&quot;Conversation history:</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">original_messages</span><span class="p">:</span>
+        <span class="n">context</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="o">.</span><span class="n">role</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+    <span class="n">context</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Tool results:</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">for</span> <span class="n">tool_name</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">tool_results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">context</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tool_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+    <span class="k">return</span> <span class="n">context</span>
+</code></pre></div>
+
+<h3 id="6-response-generation">6. Response Generation<a class="headerlink" href="#6-response-generation" title="Permanent link">&para;</a></h3>
+<p>The LLM generates a response using the augmented context:</p>
+<p><strong>Prompt Construction</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_response_prompt</span><span class="p">(</span><span class="n">user_query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">You are a helpful AI assistant with access to various tools.</span>
+
+<span class="s2">Context information:</span>
+<span class="si">{</span><span class="n">context</span><span class="si">}</span>
+
+<span class="s2">User question: </span><span class="si">{</span><span class="n">user_query</span><span class="si">}</span>
+
+<span class="s2">Please provide a helpful response based on the available information.</span>
+<span class="s2">If you used tools, mention the sources appropriately.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</code></pre></div>
+
+<h3 id="7-response-formatting">7. Response Formatting<a class="headerlink" href="#7-response-formatting" title="Permanent link">&para;</a></h3>
+<p>The response is formatted according to OpenAI's specification:</p>
+<p><strong>Formatting</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">format_openai_response</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OpenAIRresponse</span><span class="p">:</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;chatcmpl-</span><span class="si">{</span><span class="n">generate_id</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;chat.completion&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span>
+        <span class="s2">&quot;choices&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;finish_reason&quot;</span><span class="p">:</span> <span class="s2">&quot;stop&quot;</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+<h2 id="streaming-workflow">Streaming Workflow<a class="headerlink" href="#streaming-workflow" title="Permanent link">&para;</a></h2>
+<p>For streaming responses, the workflow is similar but with incremental delivery:</p>
+<h3 id="streaming-steps">Streaming Steps<a class="headerlink" href="#streaming-steps" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Initial processing</strong>: Same as non-streaming</li>
+<li><strong>Tool execution</strong>: Tools run before streaming starts</li>
+<li><strong>Incremental generation</strong>: LLM generates response in chunks</li>
+<li><strong>Real-time delivery</strong>: Chunks are sent as they're generated</li>
+</ol>
+<h3 id="streaming-implementation">Streaming Implementation<a class="headerlink" href="#streaming-implementation" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">stream_response</span><span class="p">(</span><span class="n">messages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Message</span><span class="p">],</span> <span class="n">tools</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tool</span><span class="p">]):</span>
+    <span class="c1"># Process messages and execute tools</span>
+    <span class="n">processed_messages</span> <span class="o">=</span> <span class="n">process_messages</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+    <span class="n">tool_results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">execute_tools_if_needed</span><span class="p">(</span><span class="n">processed_messages</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">build_context</span><span class="p">(</span><span class="n">processed_messages</span><span class="p">,</span> <span class="n">tool_results</span><span class="p">)</span>
+
+    <span class="c1"># Stream LLM response</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">llm</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">format_streaming_chunk</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="error-handling-workflow">Error Handling Workflow<a class="headerlink" href="#error-handling-workflow" title="Permanent link">&para;</a></h2>
+<h3 id="tool-failure-handling">Tool Failure Handling<a class="headerlink" href="#tool-failure-handling" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">handle_tool_failure</span><span class="p">(</span><span class="n">tool_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">error</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="ne">TimeoutError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;The </span><span class="si">{</span><span class="n">tool_name</span><span class="si">}</span><span class="s2"> tool timed out. Please try again.&quot;</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="ne">ConnectionError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;The </span><span class="si">{</span><span class="n">tool_name</span><span class="si">}</span><span class="s2"> service is currently unavailable.&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;An error occurred with the </span><span class="si">{</span><span class="n">tool_name</span><span class="si">}</span><span class="s2"> tool.&quot;</span>
+</code></pre></div>
+
+<h3 id="fallback-strategies">Fallback Strategies<a class="headerlink" href="#fallback-strategies" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Tool-specific fallbacks</strong>: Use alternative tools</li>
+<li><strong>Cached results</strong>: Return recently cached data</li>
+<li><strong>LLM knowledge</strong>: Rely on the model's training data</li>
+<li><strong>Error transparency</strong>: Inform the user about limitations</li>
+</ol>
+<h2 id="performance-optimization">Performance Optimization<a class="headerlink" href="#performance-optimization" title="Permanent link">&para;</a></h2>
+<h3 id="caching-strategy">Caching Strategy<a class="headerlink" href="#caching-strategy" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Tool results</strong>: Cache frequent queries for 5 minutes</li>
+<li><strong>Embeddings</strong>: Cache computed embeddings</li>
+<li><strong>LLM responses</strong>: Cache identical prompts (with caution)</li>
+</ul>
+<h3 id="parallel-execution">Parallel Execution<a class="headerlink" href="#parallel-execution" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Independent tools run concurrently</li>
+<li>Batch processing for multiple queries</li>
+<li>Connection pooling for external APIs</li>
+</ul>
+<h2 id="monitoring-and-logging">Monitoring and Logging<a class="headerlink" href="#monitoring-and-logging" title="Permanent link">&para;</a></h2>
+<h3 id="key-metrics">Key Metrics<a class="headerlink" href="#key-metrics" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Response time</strong>: End-to-end processing time</li>
+<li><strong>Tool usage</strong>: Which tools are used and how often</li>
+<li><strong>Error rates</strong>: Tool failure rates and types</li>
+<li><strong>User satisfaction</strong>: Implicit feedback from usage patterns</li>
+</ul>
+<h3 id="logging-structure">Logging Structure<a class="headerlink" href="#logging-structure" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="s2">&quot;request_id&quot;</span><span class="p">:</span> <span class="s2">&quot;unique-id&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;user_query&quot;</span><span class="p">:</span> <span class="s2">&quot;original query&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tools_used&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;tool1&quot;</span><span class="p">,</span> <span class="s2">&quot;tool2&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;tool_results&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;tool1&quot;</span><span class="p">:</span> <span class="s2">&quot;summary&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;response_time&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span>
+    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="n">null</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="example-workflow-scenarios">Example Workflow Scenarios<a class="headerlink" href="#example-workflow-scenarios" title="Permanent link">&para;</a></h2>
+<h3 id="scenario-1-simple-question">Scenario 1: Simple Question<a class="headerlink" href="#scenario-1-simple-question" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="n">User</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;What is the capital of France?&quot;</span>
+
+<span class="n">Workflow</span><span class="p">:</span>
+<span class="mf">1.</span><span class="w"> </span><span class="n">Message</span><span class="w"> </span><span class="n">processing</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Convert</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">LangChain</span><span class="w"> </span><span class="n">format</span>
+<span class="mf">2.</span><span class="w"> </span><span class="n">Intent</span><span class="w"> </span><span class="n">analysis</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">tools</span><span class="w"> </span><span class="n">needed</span><span class="w"> </span><span class="p">(</span><span class="n">common</span><span class="w"> </span><span class="n">knowledge</span><span class="p">)</span>
+<span class="mf">3.</span><span class="w"> </span><span class="n">Response</span><span class="w"> </span><span class="n">generation</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="n">LLM</span><span class="w"> </span><span class="n">knowledge</span>
+<span class="mf">4.</span><span class="w"> </span><span class="n">Response</span><span class="w"> </span><span class="n">formatting</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">Return</span><span class="w"> </span><span class="n">answer</span>
+
+<span class="n">Result</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The capital of France is Paris.&quot;</span>
+</code></pre></div>
+
+<h3 id="scenario-2-current-information">Scenario 2: Current Information<a class="headerlink" href="#scenario-2-current-information" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nv">User</span>:<span class="w"> </span><span class="s2">&quot;What are the latest developments in AI?&quot;</span>
+
+<span class="nv">Workflow</span>:
+<span class="mi">1</span>.<span class="w"> </span><span class="nv">Message</span><span class="w"> </span><span class="nv">processing</span><span class="w"> </span>→<span class="w"> </span><span class="nv">Convert</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">LangChain</span><span class="w"> </span><span class="nv">format</span>
+<span class="mi">2</span>.<span class="w"> </span><span class="nv">Intent</span><span class="w"> </span><span class="nv">analysis</span><span class="w"> </span>→<span class="w"> </span><span class="nv">Tools</span><span class="w"> </span><span class="nv">needed</span><span class="w"> </span><span class="ss">(</span><span class="nv">current</span><span class="w"> </span><span class="nv">information</span><span class="ss">)</span>
+<span class="mi">3</span>.<span class="w"> </span><span class="nv">Tool</span><span class="w"> </span><span class="nv">selection</span><span class="w"> </span>→<span class="w"> </span><span class="nv">Web</span><span class="w"> </span><span class="nv">search</span><span class="w"> </span><span class="ss">(</span><span class="nv">SearX</span><span class="ss">)</span>
+<span class="mi">4</span>.<span class="w"> </span><span class="nv">Tool</span><span class="w"> </span><span class="nv">execution</span><span class="w"> </span>→<span class="w"> </span><span class="nv">Search</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">recent</span><span class="w"> </span><span class="nv">AI</span><span class="w"> </span><span class="nv">news</span>
+<span class="mi">5</span>.<span class="w"> </span><span class="nv">Context</span><span class="w"> </span><span class="nv">augmentation</span><span class="w"> </span>→<span class="w"> </span><span class="nv">Combine</span><span class="w"> </span><span class="nv">search</span><span class="w"> </span><span class="nv">results</span><span class="w"> </span><span class="nv">with</span><span class="w"> </span><span class="nv">query</span>
+<span class="mi">6</span>.<span class="w"> </span><span class="nv">Response</span><span class="w"> </span><span class="nv">generation</span><span class="w"> </span>→<span class="w"> </span><span class="nv">Generate</span><span class="w"> </span><span class="nv">informed</span><span class="w"> </span><span class="nv">response</span>
+<span class="mi">7</span>.<span class="w"> </span><span class="nv">Response</span><span class="w"> </span><span class="nv">formatting</span><span class="w"> </span>→<span class="w"> </span><span class="k">Return</span><span class="w"> </span><span class="nv">with</span><span class="w"> </span><span class="nv">citations</span>
+
+<span class="nb">Result</span>:<span class="w"> </span><span class="s2">&quot;Based on recent news, the latest developments include...&quot;</span>
+</code></pre></div>
+
+<h3 id="scenario-3-document-based-query">Scenario 3: Document-Based Query<a class="headerlink" href="#scenario-3-document-based-query" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nv">User</span>:<span class="w"> </span><span class="s2">&quot;What does our project documentation say about security?&quot;</span>
+
+<span class="nv">Workflow</span>:
+<span class="mi">1</span>.<span class="w"> </span><span class="nv">Message</span><span class="w"> </span><span class="nv">processing</span><span class="w"> </span>→<span class="w"> </span><span class="nv">Convert</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">LangChain</span><span class="w"> </span><span class="nv">format</span>
+<span class="mi">2</span>.<span class="w"> </span><span class="nv">Intent</span><span class="w"> </span><span class="nv">analysis</span><span class="w"> </span>→<span class="w"> </span><span class="nv">Tools</span><span class="w"> </span><span class="nv">needed</span><span class="w"> </span><span class="ss">(</span><span class="nv">specific</span><span class="w"> </span><span class="nv">documents</span><span class="ss">)</span>
+<span class="mi">3</span>.<span class="w"> </span><span class="nv">Tool</span><span class="w"> </span><span class="nv">selection</span><span class="w"> </span>→<span class="w"> </span><span class="nv">RAG</span><span class="w"> </span><span class="nv">system</span>
+<span class="mi">4</span>.<span class="w"> </span><span class="nv">Tool</span><span class="w"> </span><span class="nv">execution</span><span class="w"> </span>→<span class="w"> </span><span class="nv">Search</span><span class="w"> </span><span class="nv">project</span><span class="w"> </span><span class="nv">documentation</span>
+<span class="mi">5</span>.<span class="w"> </span><span class="nv">Context</span><span class="w"> </span><span class="nv">augmentation</span><span class="w"> </span>→<span class="w"> </span><span class="nv">Combine</span><span class="w"> </span><span class="nv">relevant</span><span class="w"> </span><span class="nv">document</span><span class="w"> </span><span class="nv">sections</span>
+<span class="mi">6</span>.<span class="w"> </span><span class="nv">Response</span><span class="w"> </span><span class="nv">generation</span><span class="w"> </span>→<span class="w"> </span><span class="nv">Generate</span><span class="w"> </span><span class="nv">security</span><span class="w"> </span><span class="nv">overview</span>
+<span class="mi">7</span>.<span class="w"> </span><span class="nv">Response</span><span class="w"> </span><span class="nv">formatting</span><span class="w"> </span>→<span class="w"> </span><span class="k">Return</span><span class="w"> </span><span class="nv">with</span><span class="w"> </span><span class="nv">document</span><span class="w"> </span><span class="nv">references</span>
+
+<span class="nb">Result</span>:<span class="w"> </span><span class="s2">&quot;According to our documentation, security measures include...&quot;</span>
+</code></pre></div>
+
+<h2 id="customization-points">Customization Points<a class="headerlink" href="#customization-points" title="Permanent link">&para;</a></h2>
+<h3 id="tool-selection-logic">Tool Selection Logic<a class="headerlink" href="#tool-selection-logic" title="Permanent link">&para;</a></h3>
+<p>Override the default tool selection algorithm for specific use cases.</p>
+<h3 id="response-formatting">Response Formatting<a class="headerlink" href="#response-formatting" title="Permanent link">&para;</a></h3>
+<p>Customize how responses are formatted for different clients.</p>
+<h3 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h3>
+<p>Implement domain-specific error handling strategies.</p>
+<h3 id="caching-strategy_1">Caching Strategy<a class="headerlink" href="#caching-strategy_1" title="Permanent link">&para;</a></h3>
+<p>Adjust caching parameters based on data freshness requirements.</p>
+<h2 id="related-documentation">Related Documentation<a class="headerlink" href="#related-documentation" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../overview/">System Architecture Overview</a></li>
+<li><a href="../tools/">Tool System Design</a></li>
+<li><a href="../../api/endpoints/">API Endpoints Reference</a></li>
+<li><a href="../../development/setup/">Development Setup Guide</a></li>
+</ul>
+<p>This workflow provides a flexible yet structured approach to handling user requests, ensuring that the AI assistant can effectively leverage tools when needed while maintaining fast response times for simple queries.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
