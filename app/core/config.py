@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     default_model: str = "anthropic/claude-3.5-sonnet"
 
     # Server settings
-    host: str = "0.0.0.0"
+    host: str = "127.0.0.1"
     port: int = 8000
     environment: str = "development"
     debug: bool = True
