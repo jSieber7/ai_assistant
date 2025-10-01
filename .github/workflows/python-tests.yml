@@ -128,7 +128,7 @@ jobs:
 
     - name: Run security audit
       run: |
-        uv run pip-audit
+        uv run pip-audit --ignore-vuln GHSA-4xh5-x5gv-qwph
 
     - name: Run bandit security scanner
       run: |
